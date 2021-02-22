@@ -103,7 +103,7 @@ public class MovieServiceTest {
                 () -> assertEquals(resultMovie.getType(), movie.getType()),
                 () -> assertEquals(resultMovie.getDescription(), movie.getDescription()),
                 () -> assertEquals(resultMovie.getMedia(), movie.getMedia()),
-                () -> assertEquals(resultMovie.getLanguage(), movie.getLanguage()),
+                () -> assertEquals(resultMovie.getLanguage(), movie.getLanguage())
         );
     }
 
