@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style type="text/css">
+        label {
+            display: inline-block;
+            width: 100px;
+            margin: 7px;
+            text-align: left;
+        }
+
+        button {
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <h1>NEW MOVIE</h1>
+    <br>
+    <form action="#" th:action="@{/movie/save}" th:object="${movie}" method="POST">
+
+        <input type="hidden" th:field="*{id}"/> <br/>
+
+        <label>Movie Name:</label>
+        <input type="text" th:field="*{name}" placeholder="name"><br>
+
+        <label>Movie Year:</label>
+        <input type="text" th:field="*{year}" placeholder="year"><br>
+
+        <label>Movie Type:</label>
+        <select name="type">
+            <option th:each="type : ${T(com.mendes.enums.MovieType).values()}"
+                    th:value="${type}" th:text="${type}"></option>
+        </select><br>
+
+        <label>Movie Description:</label>
+        <input type="text" th:field="*{description}" placeholder="description"><br>
+
+        <label>Movie Media:</label>
+        <input type="text" th:field="*{media}" placeholder="media"><br>
+
+        <label>Movie Language:</label>
+        <select name="language">
+            <option th:each="language : ${T(com.mendes.enums.MovieLanguage).values()}"
+                    th:value="${language}" th:text="${language}"></option>
+        </select><br>
+
+        <label>Movie Actors:</label>
+        <select th:field="*{actors}">
+            <option th:each="actor:${actors}" th:value="${actor.id}" th:text="${actor.firstName}"></option>
+        </select> <br/>
+
+        <button type="submit">SAVE</button>
+    </form>
+    <a th:href="@{/movie/list}">back to movie list</a><br>
+    <a th:href="@{/actor/list}">go to actor list</a>
+</div>
+</body>
+</html>

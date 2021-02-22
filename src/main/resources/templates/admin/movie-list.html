@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <a th:href="@{/movie/add-movie}">ADD NEW MOVIE</a><br>
+    <a th:href="@{/actor/list}">GO TO ACTOR LIST</a><br>
+    <a th:href="@{/user-movie/list}">GO TO USER-MOVIE LIST</a><br>
+    <h1>MOVIE LİST</h1>
+    <form th:action="@{/movie/search}" method="get">
+        <input type="text" name="search" th:value="${search}"/> <br/>
+        <button type="submit">Search</button>
+    </form>
+    <form th:action="@{/movie/sort-date}" method="get"><br/>
+        <button type="submit">Sort By Date</button>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>MOVIE ID</th>
+            <td>MOVIE NAME</td>
+            <td>MOVIE YEAR</td>
+            <td>MOVIE TYPE</td>
+            <td>MOVIE DESCRIPTION</td>
+            <td>MOVIE MEDIA</td>
+            <td>MOVIE LANGUAGE</td>
+            <td>MOVIE ACTOR</td>
+        </tr>
+        </thead>
+        <tbody th:each="movie:${movies}">
+        <td th:text="${movie.id}"></td>
+        <td th:text="${movie.name}"></td>
+        <td th:text="${movie.year}"></td>
+        <td th:text="${movie.type}"></td>
+        <td th:text="${movie.description}"></td>
+        <td th:text="${movie.media}"></td>
+        <td th:text="${movie.language}"></td>
+        <td>
+            <p th:each="actor: ${movie.actors}" th:text="${actor.firstName}"></p>
+        </td>
+        <td>
+            <a th:href="@{/movie/edit/{id}(id=${movie.id})}">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/movie/delete/{id}(id=${movie.id})}">Delete</a>
+        </td>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

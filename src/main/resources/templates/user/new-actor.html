@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        label {
+            display: inline-block;
+            width: 100px;
+            margin: 7px;
+            text-align: left;
+        }
+
+        button {
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <h1>NEW ACTOR FOR USER</h1>
+    <br>
+    <form action="#" th:action="@{/user-actor/save}" th:object="${actor}" method="POST">
+
+        <input type="hidden" th:field="*{id}"/> <br/>
+
+        <label>Actor FirstName:</label>
+        <input type="text" th:field="*{firstName}" placeholder="firstname"><br>
+
+        <label>Actor LastName:</label>
+        <input type="text" th:field="*{lastName}" placeholder="lastname"><br>
+
+        <label>Actor Role:</label>
+        <select name="role">
+            <option th:each="role : ${T(com.mendes.enums.ActorRole).values()}"
+                    th:value="${role}" th:text="${role}"></option>
+        </select><br>
+
+        <button type="submit">SAVE</button>
+    </form>
+    <a th:href="@{/user-actor/list}">back to user-actor list</a><br>
+    <a th:href="@{/user-movie/list}">go to user-movie list</a>
+</div>
+
+</body>
+</html>
