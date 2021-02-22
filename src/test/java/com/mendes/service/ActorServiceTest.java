@@ -61,7 +61,7 @@ public class ActorServiceTest {
     @Test
     public void findById() {
         resultActor = actorService.save(defaultActor);
-        assertNull(resultActor);
+        assertNotNull(resultActor);
         Actor actor = actorService.getById(resultActor.getId());
         assertNotNull(actor);
         assertAll(
