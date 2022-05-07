@@ -1,58 +1,26 @@
-package com.mendes.entity;
+package com.mendes.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.mendes.enums.MovieLanguage;
 import com.mendes.enums.MovieType;
+import com.mendes.model.entity.Actor;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by mendesmustafa on 20.02.2021.
+ * @author mendesmustafa on 23-04-2022
  */
 
-@Entity
-@Table(name = "MOVIE")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Movie.class)
-public class Movie implements Serializable {
+public class MovieDto implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "MOVIE_ID_SEQ")
-    @SequenceGenerator(name = "MOVIE_ID_SEQ", allocationSize = 1)
-    @Column(name = "ID")
     private Long id;
-
-    @Column(name = "NAME")
     private String name;
-
-    @Column(name = "YEAR")
     private int year;
-
-    @Column(name = "TYPE")
-    @Enumerated(EnumType.STRING)
-    private MovieType type = MovieType.COMEDY;
-
-    @Column(name = "DESCRIPTION", length = 1024)
+    private MovieType type;
     private String description;
-
-    @Column(name = "MEDIA")
     private String media;
-
-    @Column(name = "LANGUAGE")
-    @Enumerated(EnumType.STRING)
-    private MovieLanguage language = MovieLanguage.ENGLISH;
-
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "MOVIE_ACTOR",
-            joinColumns = @JoinColumn(name = "MOVIE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ACTOR_ID")
-    )
+    private MovieLanguage language;
     private List<Actor> actors = new ArrayList<>();
 
     public Long getId() {

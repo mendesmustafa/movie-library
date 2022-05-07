@@ -1,6 +1,6 @@
 package com.mendes.repository;
 
-import com.mendes.entity.Movie;
+import com.mendes.model.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,11 +15,9 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    @Query("SELECT movie FROM Movie movie WHERE" +
-            " (UPPER(movie.name) LIKE %:search%) " +
-            " OR (UPPER(movie.type) LIKE %:search%) ")
+    @Query("SELECT movie FROM Movie movie WHERE (UPPER(movie.name) LIKE %:search%) OR (UPPER(movie.type) LIKE %:search%) ")
     List<Movie> findBySearch(@Param("search") String search);
 
-    @Query("SELECT movie  FROM Movie movie ORDER BY year DESC ")
+    @Query("SELECT movie  FROM Movie movie ORDER BY movie.year DESC ")
     List<Movie> findAllByDate();
 }

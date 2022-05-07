@@ -6,9 +6,9 @@ package com.mendes.enums;
 
 public enum ActorRole {
 
-    BASROL,
-    KONUK,
-    YARDIMCI,
-    YEDEK,
-    GIZLI,
+    LEAD_ACTOR,
+    GUEST_ACTOR,
+    SUPPORT_ACTOR,
+    ALTERNATE_ACTOR,
+    HIDDEN_ACTOR,
 }

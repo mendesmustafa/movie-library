@@ -1,11 +1,13 @@
 package com.mendes.service;
 
-import com.mendes.entity.Actor;
+import com.mendes.model.dto.ActorDto;
+import com.mendes.model.entity.Actor;
 import com.mendes.repository.ActorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by mendesmustafa on 20.02.2021.
@@ -14,7 +16,7 @@ import java.util.Optional;
 @Service
 public class ActorService {
 
-    private ActorRepository actorRepository;
+    private final ActorRepository actorRepository;
 
     public ActorService(ActorRepository actorRepository) {
         this.actorRepository = actorRepository;
@@ -29,36 +31,37 @@ public class ActorService {
         return actor;
     }
 
-    public Actor save(Actor model) {
+    public ActorDto save(ActorDto actorDto) {
         Actor actor = new Actor();
-        if (model.getId() != null) {
-            Optional<Actor> actorOptional = actorRepository.findById(model.getId());
+        if (actorDto.getId() != null) {
+            Optional<Actor> actorOptional = actorRepository.findById(actorDto.getId());
             if (actorOptional.isPresent()) {
                 actor = actorOptional.get();
             }
         }
-        fill(actor, model);
+        fillActor(actor, actorDto);
         actorRepository.save(actor);
-        return actor;
+        actorDto.setId(actor.getId());
+        return actorDto;
     }
 
-    private void fill(Actor actor, Actor model) {
-        actor.setFirstName(model.getFirstName());
-        actor.setLastName(model.getLastName());
-        actor.setRole(model.getRole());
+    private void fillActor(Actor actor, ActorDto actorDto) {
+        actor.setFirstName(actorDto.getFirstName());
+        actor.setLastName(actorDto.getLastName());
+        actor.setRole(actorDto.getRole());
     }
 
-    public Actor getById(Long id) {
-        Actor model = null;
+    public ActorDto getById(Long id) {
+        ActorDto model = null;
         Actor actor = findById(id);
         if (actor != null) {
-            model = fillModel(actor);
+            model = fillActorDto(actor);
         }
         return model;
     }
 
-    private Actor fillModel(Actor actor) {
-        Actor model = new Actor();
+    private ActorDto fillActorDto(Actor actor) {
+        ActorDto model = new ActorDto();
         model.setId(actor.getId());
         model.setFirstName(actor.getFirstName());
         model.setLastName(actor.getLastName());
@@ -76,8 +79,7 @@ public class ActorService {
         }
     }
 
-    public List<Actor> list() {
-        List<Actor> actors = actorRepository.findAll();
-        return actors;
+    public List<ActorDto> list() {
+        return actorRepository.findAll().stream().map(this::fillActorDto).collect(Collectors.toList());
     }
 }

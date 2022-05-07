@@ -1,14 +1,12 @@
 package com.mendes.controller;
 
-import com.mendes.entity.Actor;
-import com.mendes.entity.Movie;
+import com.mendes.model.dto.MovieDto;
+import com.mendes.model.entity.Movie;
 import com.mendes.service.ActorService;
 import com.mendes.service.MovieService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by mendesmustafa on 20.02.2021.
@@ -18,8 +16,8 @@ import java.util.List;
 @RequestMapping("movie")
 public class MovieController {
 
-    private MovieService movieService;
-    private ActorService actorService;
+    private final MovieService movieService;
+    private final ActorService actorService;
 
     public MovieController(MovieService movieService, ActorService actorService) {
         this.movieService = movieService;
@@ -28,14 +26,13 @@ public class MovieController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        List<Movie> movies = movieService.list();
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", movieService.list());
         return "admin/movie-list";
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("movie") Movie movie) {
-        movieService.save(movie);
+    public String save(@ModelAttribute("movie") MovieDto movieDto) {
+        movieService.save(movieDto);
         return "redirect:/movie/list";
     }
 
@@ -47,32 +44,27 @@ public class MovieController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        Movie movie = movieService.getById(id);
         model.addAttribute("actors", actorService.list());
-        model.addAttribute("movie", movie);
+        model.addAttribute("movie", movieService.getById(id));
         return "admin/new-movie";
     }
 
     @GetMapping("/add-movie")
     public String add(Model model) {
-        Movie movie = new Movie();
-        List<Actor> actors = actorService.list();
-        model.addAttribute("actors", actors);
-        model.addAttribute("movie", movie);
+        model.addAttribute("actors", actorService.list());
+        model.addAttribute("movie", new Movie());
         return "admin/new-movie";
     }
 
     @GetMapping("/search")
     public String search(@RequestParam("search") String search, Model model) {
-        List<Movie> movies = movieService.search(search);
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", movieService.search(search));
         return "admin/movie-list";
     }
 
     @GetMapping("/sort-date")
     public String sortDate(Model model) {
-        List<Movie> movies = movieService.sortDate();
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", movieService.sortDate());
         return "admin/movie-list";
     }
 }

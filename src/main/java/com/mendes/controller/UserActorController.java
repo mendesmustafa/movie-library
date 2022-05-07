@@ -1,6 +1,7 @@
 package com.mendes.controller;
 
-import com.mendes.entity.Actor;
+import com.mendes.model.dto.ActorDto;
+import com.mendes.model.entity.Actor;
 import com.mendes.service.ActorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,28 +18,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("user-actor")
 public class UserActorController {
 
-    private ActorService actorService;
+    private final ActorService actorService;
 
     public UserActorController(ActorService actorService) {
         this.actorService = actorService;
     }
 
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(Model model) {
         model.addAttribute("actors", actorService.list());
         return "user/actor-list";
     }
 
     @GetMapping("/add-actor")
     public String add(Model model) {
-        Actor actor = new Actor();
-        model.addAttribute("actor", actor);
+        model.addAttribute("actor", new Actor());
         return "user/new-actor";
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("actor") Actor actor) {
-        actorService.save(actor);
+    public String save(@ModelAttribute("actor") ActorDto actorDto) {
+        actorService.save(actorDto);
         return "redirect:/user-actor/list";
     }
 }

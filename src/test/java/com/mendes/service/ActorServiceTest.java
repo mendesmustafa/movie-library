@@ -1,6 +1,7 @@
 package com.mendes.service;
 
-import com.mendes.entity.Actor;
+import com.mendes.model.dto.ActorDto;
+import com.mendes.model.entity.Actor;
 import com.mendes.enums.ActorRole;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,21 +18,21 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 @SpringBootTest
-public class ActorServiceTest {
+class ActorServiceTest {
 
-    private final static String DEFAULT_FIRST_NAME = "ALİ";
-    private final static String DEFAULT_LAST_NAME = "CAN";
-    private final static ActorRole DEFAULT_ROLE = ActorRole.BASROL;
+    private final static String DEFAULT_FIRST_NAME = "TEST-FIRST_NAME";
+    private final static String DEFAULT_LAST_NAME = "TEST-LAST_NAME";
+    private final static ActorRole DEFAULT_ROLE = ActorRole.LEAD_ACTOR;
 
-    Actor defaultActor;
-    Actor resultActor;
+    ActorDto defaultActor;
+    ActorDto resultActor;
 
     @Autowired
     private ActorService actorService;
 
     @BeforeEach
     public void setUp() {
-        defaultActor = new Actor();
+        defaultActor = new ActorDto();
         defaultActor.setFirstName(DEFAULT_FIRST_NAME);
         defaultActor.setLastName(DEFAULT_LAST_NAME);
         defaultActor.setRole(DEFAULT_ROLE);
@@ -45,13 +46,13 @@ public class ActorServiceTest {
     }
 
     @Test
-    public void create() {
+    void create() {
         resultActor = actorService.save(defaultActor);
         assertNotNull(resultActor.getId());
     }
 
     @Test
-    public void delete() {
+    void delete() {
         resultActor = actorService.save(defaultActor);
         actorService.delete(resultActor.getId());
         Actor actor = actorService.findById(resultActor.getId());
@@ -59,32 +60,24 @@ public class ActorServiceTest {
     }
 
     @Test
-    public void findById() {
+    void findById() {
         resultActor = actorService.save(defaultActor);
         assertNotNull(resultActor);
-        Actor actor = actorService.getById(resultActor.getId());
-        assertNotNull(actor);
+        ActorDto actor = actorService.getById(resultActor.getId());
         assertAll(
+                () -> assertNotNull(actor),
                 () -> assertEquals(actor.getId(), resultActor.getId()),
                 () -> assertEquals(actor.getFirstName(), resultActor.getFirstName()),
                 () -> assertEquals(actor.getLastName(), resultActor.getLastName()),
                 () -> assertEquals(actor.getRole(), resultActor.getRole())
         );
-
     }
 
     @Test
-    public void list() {
+    void list() {
         resultActor = actorService.save(defaultActor);
         assertNotNull(resultActor);
-        Actor actor = new Actor();
-        actor.setFirstName("MURAT");
-        actor.setLastName("TAN");
-        actor.setRole(ActorRole.KONUK);
-        Actor actor2 = actorService.save(actor);
-        assertNotNull(actor2);
-
-        List<Actor> actors = actorService.list();
-        assertEquals(actors.size(), 2);
+        List<ActorDto> actors = actorService.list();
+        assertTrue(actors.size() > 0);
     }
 }

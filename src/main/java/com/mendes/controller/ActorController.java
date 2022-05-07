@@ -1,12 +1,11 @@
 package com.mendes.controller;
 
-import com.mendes.entity.Actor;
+import com.mendes.model.dto.ActorDto;
+import com.mendes.model.entity.Actor;
 import com.mendes.service.ActorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by mendesmustafa on 20.02.2021.
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("actor")
 public class ActorController {
 
-    private ActorService actorService;
+    private final ActorService actorService;
 
     public ActorController(ActorService actorService) {
         this.actorService = actorService;
@@ -24,15 +23,13 @@ public class ActorController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        List<Actor> actors = actorService.list();
-        model.addAttribute("actors", actors);
+        model.addAttribute("actors", actorService.list());
         return "admin/actor-list";
     }
 
     @GetMapping("/add-actor")
     public String add(Model model) {
-        Actor actor = new Actor();
-        model.addAttribute("actor", actor);
+        model.addAttribute("actor", new Actor());
         return "admin/new-actor";
     }
 
@@ -44,14 +41,13 @@ public class ActorController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        Actor actor = actorService.getById(id);
-        model.addAttribute("actor", actor);
+        model.addAttribute("actor", actorService.getById(id));
         return "admin/new-actor";
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("actor") Actor actor) {
-        actorService.save(actor);
+    public String save(@ModelAttribute("actor") ActorDto actorDto) {
+        actorService.save(actorDto);
         return "redirect:/actor/list";
     }
 }

@@ -1,6 +1,6 @@
 package com.mendes.repository;
 
-import com.mendes.entity.Actor;
+import com.mendes.model.entity.Actor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.mendes.entity;
+package com.mendes.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -30,7 +30,7 @@ public class Actor implements Serializable {
 
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
-    private ActorRole role = ActorRole.BASROL;
+    private ActorRole role = ActorRole.LEAD_ACTOR;
 
     public Long getId() {
         return id;
